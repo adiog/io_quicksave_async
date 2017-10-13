@@ -66,5 +66,8 @@ setup(
     },
 
     entry_points={
+        'console_scripts': [
+            'qs-async=quicksave_async.pyasync:main',
+        ],
     },
 )
