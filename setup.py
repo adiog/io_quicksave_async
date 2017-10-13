@@ -54,7 +54,7 @@ setup(
 
     packages=find_packages('src'),
 
-    install_requires=['pillow', 'selenium', 'pika', 'python-magic', 'git+http://gitlab.brainfuck.pl/adiog/io_quicksave_pybeans'],
+    install_requires=['pillow', 'selenium', 'pika', 'python-magic'],
 
     package_dir={
         '': 'src'
