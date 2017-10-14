@@ -2,16 +2,16 @@
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
 
 from quicksave_pybeans.generated.QsBeans import MetaBean, BackgroundTaskBean, TagBean, DatabaseTaskBean
-from rabbit_poll import rabbit_poll
-from rabbit_push import rabbit_push
-from task.git import git
-from task.image import image
-from task.thumbnail import thumbnail
-from task.wget import wget
-from task.youtube import youtube
-from util.logger import log
-from util.storage import Sshfs, StorageFactory
-from util.timer import Timer
+from quicksave_async.rabbit_poll import rabbit_poll
+from quicksave_async.rabbit_push import rabbit_push
+from quicksave_async.task.git import git
+from quicksave_async.task.image import image
+from quicksave_async.task.thumbnail import thumbnail
+from quicksave_async.task.wget import wget
+from quicksave_async.task.youtube import youtube
+from quicksave_async.util.logger import log
+from quicksave_async.util.storage import Sshfs, StorageFactory
+from quicksave_async.util.timer import Timer
 
 
 def task(name, internalCreateRequest, params):

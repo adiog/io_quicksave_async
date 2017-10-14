@@ -2,9 +2,9 @@
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
 import os
 
-from generated.QsBeans import DatabaseTaskBean, FileBean
-from libs.crop_image import crop_image
-from libs.selenium_thumbnail import save_thumbnail
+from quicksave_pybeans.generated.QsBeans import DatabaseTaskBean, FileBean
+from quicksave_async.libs.crop_image import crop_image
+from quicksave_async.libs.selenium_thumbnail import save_thumbnail
 
 
 def thumbnail(internalCreateRequest, storageProvider):

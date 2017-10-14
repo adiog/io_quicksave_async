@@ -6,8 +6,8 @@ import subprocess
 import os
 
 import re
-from generated.QsBeans import FileBean, DatabaseTaskBean, TagBean
-from util.regex import retrieve_from_string_by_regex
+from quicksave_pybeans.generated.QsBeans import FileBean, DatabaseTaskBean, TagBean
+from quicksave_async.util.regex import retrieve_from_string_by_regex
 
 
 def youtube(internalCreateRequest, storageProvider):

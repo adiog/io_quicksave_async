@@ -3,7 +3,7 @@
 
 import datetime
 
-from util.logger import log
+from quicksave_async.util.logger import log
 
 
 class Timer(object):
