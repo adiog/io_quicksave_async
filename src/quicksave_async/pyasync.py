@@ -1,8 +1,7 @@
 # This file is a part of quicksave project.
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
 
-from quicksave_pybeans.generated.QsBeans import MetaBean, BackgroundTaskBean, TagBean, DatabaseTaskBean
-from quicksave_async.rabbit_poll import rabbit_poll
+from quicksave_async.rabbit_loop import rabbit_loop
 from quicksave_async.rabbit_push import rabbit_push
 from quicksave_async.task.audio import audio
 from quicksave_async.task.git import git
@@ -14,49 +13,51 @@ from quicksave_async.task.youtube import youtube
 from quicksave_async.util.logger import log
 from quicksave_async.util.storage import Sshfs, StorageFactory
 from quicksave_async.util.timer import Timer
+from quicksave_pybeans.generated.QsBeans import MetaBean, BackgroundTaskBean, TagBean, DatabaseTaskBean
 
 
-def task(name, internalCreateRequest, params):
-    meta = internalCreateRequest.createRequest.meta
+def task(name, internal_create_request_bean, params):
+    meta = internal_create_request_bean.createRequest.meta
 
-    storage = StorageFactory.create(internalCreateRequest.storageConnectionString, meta.user_hash, internalCreateRequest.keys)
+    storage = StorageFactory.create(internal_create_request_bean.storageConnectionString, meta.user_hash, internal_create_request_bean.keys)
     storage.init(meta.meta_hash)
 
     if name == 'git':
-        return git(internalCreateRequest, storage)
+        return git(internal_create_request_bean, storage)
     elif name == 'audio':
-        return audio(internalCreateRequest, storage)
+        return audio(internal_create_request_bean, storage)
     elif name == 'video':
-        return video(internalCreateRequest, storage)
+        return video(internal_create_request_bean, storage)
     elif name == 'image':
-        return image(internalCreateRequest, storage)
+        return image(internal_create_request_bean, storage)
     elif name == 'thumbnail':
-        return thumbnail(internalCreateRequest, storage)
+        return thumbnail(internal_create_request_bean, storage)
     elif name == 'wget':
-        return wget(internalCreateRequest, storage)
+        return wget(internal_create_request_bean, storage)
     elif name == 'youtube':
-        return youtube(internalCreateRequest, storage)
+        return youtube(internal_create_request_bean, storage)
     else:
         log('WARNING: Unsupported task type: <%s>' % name)
         return []
 
 
-def task_callback(task_bean):
-    with Timer('%s' % (task_bean.name)):
-        #try:
+def task_callback(channel, task_bean):
+    with Timer('%s' % task_bean.name):
+        try:
             database_tasks = task(task_bean.name, task_bean.internalCreateRequest, task_bean.kwargs)
             for database_task in database_tasks:
-                rabbit_push('response', database_task)
+                rabbit_push(channel, database_task)
             meta = task_bean.internalCreateRequest.createRequest.meta
-            tagBean = TagBean(meta_hash=meta.meta_hash, user_hash=meta.user_hash, name='python_async:{}'.format(task_bean.name))
-            database_task = DatabaseTaskBean(databaseConnectionString=task_bean.internalCreateRequest.databaseConnectionString, type='insert', beanname='Tag', beanjson=tagBean.to_string())
-            rabbit_push('response', database_task)
-        #except:
-        #    log('ERROR processing bean:')
-        #    log(task_bean.to_string())
+            tag_bean = TagBean(meta_hash=meta.meta_hash, user_hash=meta.user_hash, name='python_async:{}'.format(task_bean.name))
+            database_task = DatabaseTaskBean(databaseConnectionString=task_bean.internalCreateRequest.databaseConnectionString, type='insert', beanname='Tag', beanjson=tag_bean.to_string())
+            rabbit_push(channel, database_task)
+        except:
+            log('ERROR processing bean:')
+            log(task_bean.to_string())
+
 
 def main():
-    rabbit_poll('request', BackgroundTaskBean, task_callback)
+    rabbit_loop(BackgroundTaskBean, task_callback)
 
 
 if __name__ == '__main__':

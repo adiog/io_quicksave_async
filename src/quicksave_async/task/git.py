@@ -1,18 +1,18 @@
 # This file is a part of quicksave project.
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
 
+import os
 import subprocess
 import tempfile
 
-import os
-
 import magic
+
 from quicksave_pybeans.generated.QsBeans import FileBean, DatabaseTaskBean
 
 
-def git(internalCreateRequest, storageProvider):
+def git(internal_create_request_bean, storage_provider):
     try:
-        meta = internalCreateRequest.createRequest.meta
+        meta = internal_create_request_bean.createRequest.meta
         tmp = tempfile.mkdtemp()
         source = tmp + '/' + 'git'
         github_path = meta.source_url.split('github.com/')
@@ -22,18 +22,17 @@ def git(internalCreateRequest, storageProvider):
         repo_url = f'https://github.com/{user}/{repo}'
         subprocess.check_output(['git', 'clone', repo_url, source])
         subprocess.check_output(['tar', '-cvf', source + '.tar', source])
-        item_dir = storageProvider.getMetaPath(meta.meta_hash)
+        item_dir = storage_provider.getMetaPath(meta.meta_hash)
         target = item_dir + '/git'
-        storageProvider.move(source, target)
+        storage_provider.move(source, target)
         target_tar = target + 'tar'
-        storageProvider.move(source + '.tar', target_tar)
-
+        storage_provider.move(source + '.tar', target_tar)
         filesize = os.path.getsize(target_tar)
         filename = 'git.tar'
         mimetype = magic.from_file(target_tar, mime=True)
-        fileBean = FileBean(filename=filename, meta_hash=meta.meta_hash, mimetype=mimetype, filesize=filesize)
+        file_bean = FileBean(filename=filename, meta_hash=meta.meta_hash, mimetype=mimetype, filesize=filesize)
         meta.meta_type = 'quicksave/image'
-        return [DatabaseTaskBean(databaseConnectionString=internalCreateRequest.databaseConnectionString, type='insert', beanname='File', beanjson=fileBean.to_string())]
+        return [DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='insert', beanname='File', beanjson=file_bean.to_string())]
     except:
         return []
 

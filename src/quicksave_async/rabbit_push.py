@@ -1,11 +1,10 @@
-import pika
+# This file is a part of quicksave project.
+# Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
+
 import quicksave_async.env
 
-def rabbit_push(queue, bean):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=quicksave_async.env.IO_QUICKSAVE_MQ_HOST, port=quicksave_async.env.IO_QUICKSAVE_MQ_PORT))
-    channel = connection.channel()
-    channel.queue_declare(queue=queue)
+
+def rabbit_push(channel, bean):
     channel.basic_publish(exchange='',
-                          routing_key=queue,
+                          routing_key=quicksave_async.env.RESPONSE_QUEUE,
                           body=bean.to_string().encode())
-    connection.close()
