@@ -6,7 +6,7 @@ import tempfile
 
 import os
 
-from IPython.core import magic
+import magic
 from generated.QsBeans import FileBean, DatabaseTaskBean
 
 
