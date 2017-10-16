@@ -54,7 +54,7 @@ setup(
 
     packages=find_packages('src'),
 
-    install_requires=['pillow', 'selenium', 'pika', 'python-magic'],
+    install_requires=['pillow', 'selenium', 'pika', 'python-magic', 'beautifulsoup4'],
 
     package_dir={
         '': 'src'

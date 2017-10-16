@@ -10,22 +10,19 @@ import magic
 from quicksave_pybeans.generated.QsBeans import FileBean, DatabaseTaskBean
 
 
-def image(internalCreateRequest, storageProvider):
+def video(internalCreateRequest, storageProvider):
     try:
         meta = internalCreateRequest.createRequest.meta
         item_dir = storageProvider.getMetaPath(meta.meta_hash)
-        print(meta.text)
         run = subprocess.run(['wget', '--no-verbose', '--no-check-certificate', '-P', item_dir, meta.text], stdout = subprocess.PIPE, stderr=subprocess.PIPE)
         output = run.stderr
         meta.text = ''
-        print(output)
         output_file = re.sub(r'.*-> "([^"]*)".*', r'\1', output.decode(), flags=re.DOTALL)
-        print(output_file)
         filesize = os.path.getsize(output_file)
         filename = re.sub(r'.*/', '', output_file)
         mimetype = magic.from_file(output_file, mime=True)
         fileBean = FileBean(filename=filename, meta_hash=meta.meta_hash, mimetype=mimetype, filesize=filesize)
-        meta.meta_type = 'quicksave/image'
+        meta.meta_type = 'quicksave/video'
         return [DatabaseTaskBean(databaseConnectionString=internalCreateRequest.databaseConnectionString, type='insert', beanname='File', beanjson=fileBean.to_string()),
                 DatabaseTaskBean(databaseConnectionString=internalCreateRequest.databaseConnectionString, type='update', beanname='Meta', beanjson=meta.to_string())]
     except:

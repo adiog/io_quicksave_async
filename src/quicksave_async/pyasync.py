@@ -4,9 +4,11 @@
 from quicksave_pybeans.generated.QsBeans import MetaBean, BackgroundTaskBean, TagBean, DatabaseTaskBean
 from quicksave_async.rabbit_poll import rabbit_poll
 from quicksave_async.rabbit_push import rabbit_push
+from quicksave_async.task.audio import audio
 from quicksave_async.task.git import git
 from quicksave_async.task.image import image
 from quicksave_async.task.thumbnail import thumbnail
+from quicksave_async.task.video import video
 from quicksave_async.task.wget import wget
 from quicksave_async.task.youtube import youtube
 from quicksave_async.util.logger import log
@@ -22,6 +24,10 @@ def task(name, internalCreateRequest, params):
 
     if name == 'git':
         return git(internalCreateRequest, storage)
+    elif name == 'audio':
+        return audio(internalCreateRequest, storage)
+    elif name == 'video':
+        return video(internalCreateRequest, storage)
     elif name == 'image':
         return image(internalCreateRequest, storage)
     elif name == 'thumbnail':
