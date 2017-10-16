@@ -7,7 +7,7 @@ import tempfile
 import os
 
 import magic
-from generated.QsBeans import FileBean, DatabaseTaskBean
+from quicksave_pybeans.generated.QsBeans import FileBean, DatabaseTaskBean
 
 
 def git(internalCreateRequest, storageProvider):
