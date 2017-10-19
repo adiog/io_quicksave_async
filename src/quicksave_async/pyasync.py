@@ -46,7 +46,7 @@ def task(name, internal_create_request_bean, params):
 
 def task_callback(channel, task_bean):
     with Timer('%s' % task_bean.name):
-        try:
+        #try:
             database_tasks = task(task_bean.name, task_bean.internalCreateRequest, task_bean.kwargs)
             for database_task in database_tasks:
                 rabbit_push(channel, database_task)
@@ -54,7 +54,7 @@ def task_callback(channel, task_bean):
             tag_bean = TagBean(meta_hash=meta.meta_hash, user_hash=meta.user_hash, name='python_async:{}'.format(task_bean.name))
             database_task = DatabaseTaskBean(databaseConnectionString=task_bean.internalCreateRequest.databaseConnectionString, type='insert', beanname='Tag', beanjson=tag_bean.to_string())
             rabbit_push(channel, database_task)
-        except:
+        #except:
             log('ERROR processing bean:')
             log(task_bean.to_string())
 

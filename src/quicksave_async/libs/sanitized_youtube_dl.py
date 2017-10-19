@@ -8,10 +8,11 @@ from quicksave_async.util.regex import retrieve_from_string_by_regex
 
 def sanitized_youtube_dl(video_url):
     download_command = 'youtube-dl %s' % video_url
-    download_command_output = subprocess.check_output(download_command, shell=True).decode()
-    original_filename = retrieve_from_string_by_regex(download_command_output, r'Merging formats into "(.*)"')
+    subprocess.check_call(download_command, shell=True)
+    filename_command = 'youtube-dl --get-filename %s' % video_url
+    original_filename = re.sub(r'\n', '', subprocess.check_output(filename_command.split(' ')).decode())
     sanitized_filename = sanitize_filename(original_filename)
-    original_filepath = './' + original_filename
+    original_filepath = original_filename
     return original_filepath, sanitized_filename
 
 
