@@ -54,7 +54,7 @@ setup(
 
     packages=find_packages('src'),
 
-    install_requires=['pillow', 'selenium', 'pika', 'python-magic', 'beautifulsoup4', 'requests'],
+    install_requires=['pillow', 'selenium', 'pika', 'python-magic', 'beautifulsoup4', 'requests', 'youtube_dl'],
 
     package_dir={
         '': 'src'

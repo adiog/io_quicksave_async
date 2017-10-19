@@ -39,6 +39,11 @@ class LocalStorage(object):
         except:
             pass
 
+    def store(self, meta, filepath, filename):
+        item_dir = self.getMetaPath(meta.meta_hash)
+        output_file = item_dir + '/' + filename
+        self.move(filepath, output_file)
+
     def save(self, metaHash, filename, filebody):
         filePath = self.getFilePath(metaHash, filename)
         with open(filePath, 'w') as f:
