@@ -8,7 +8,6 @@ from quicksave_async.libs.sanitized_youtube_dl import sanitized_youtube_dl
 
 
 def facebook_video(internal_create_request_bean, storage_provider):
-    try:
         meta = internal_create_request_bean.createRequest.meta
 
         video_url = meta.text
@@ -21,7 +20,7 @@ def facebook_video(internal_create_request_bean, storage_provider):
         return [DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='insert', beanname='File', beanjson=file_bean.to_string()),
                 DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='insert', beanname='Tag', beanjson=tag_bean.to_string()),
                 DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='update', beanname='Meta', beanjson=meta.to_string())]
-    except:
-        return []
+#    except:
+#        return []
 
 
