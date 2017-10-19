@@ -15,7 +15,7 @@ def facebook_video(internal_create_request_bean, storage_provider):
         item_dir = storage_provider.getMetaPath(meta.meta_hash)
         video_file = item_dir + '/%(title)s'
         facebook_link = item_dir + '/facebook-video'
-        youtube_dl_output = subprocess.check_output('youtube-dl --output \'%s\' %s' % (video_file, meta.text), shell=True).decode()
+        youtube_dl_output = subprocess.check_output('youtube-dl %s' % (video_file, meta.text), shell=True).decode()
         output_file = retrieve_from_string_by_regex(youtube_dl_output, r'Merging formats into "(.*)"')
         subprocess.check_output(['ln', '-s', output_file, facebook_link])
         print(output_file)
