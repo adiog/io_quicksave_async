@@ -4,6 +4,7 @@
 from quicksave_async.rabbit_loop import rabbit_loop
 from quicksave_async.rabbit_push import rabbit_push
 from quicksave_async.task.audio import audio
+from quicksave_async.task.facebook import facebook_video
 from quicksave_async.task.git import git
 from quicksave_async.task.image import image
 from quicksave_async.task.thumbnail import thumbnail
@@ -34,8 +35,10 @@ def task(name, internal_create_request_bean, params):
         return thumbnail(internal_create_request_bean, storage)
     elif name == 'wget':
         return wget(internal_create_request_bean, storage)
-    elif name == 'youtube':
+    elif name == 'youtube:video':
         return youtube(internal_create_request_bean, storage)
+    elif name == 'facebook:video':
+        return facebook_video(internal_create_request_bean, storage)
     else:
         log('WARNING: Unsupported task type: <%s>' % name)
         return []
