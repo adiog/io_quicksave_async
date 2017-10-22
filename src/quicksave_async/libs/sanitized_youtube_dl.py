@@ -9,9 +9,9 @@ from quicksave_async.util.regex import retrieve_from_string_by_regex
 
 
 def sanitized_youtube_dl(video_url):
-    download_command = 'youtube-dl --restrict-filenames %s' % video_url
+    download_command = 'youtube-dl --merge-output-format mkv --restrict-filenames %s' % video_url
     subprocess.check_call(download_command, shell=True)
-    filename_command = 'youtube-dl --restrict-filenames --get-filename %s' % video_url
+    filename_command = 'youtube-dl --merge-output-format mkv --restrict-filenames --get-filename %s' % video_url
     original_filename = re.sub(r'\n', '', subprocess.check_output(filename_command.split(' ')).decode())
     if not os.path.exists(original_filename):
         try_original_filename = re.sub(r'\.[^\.]*$', '.mkv', original_filename)
