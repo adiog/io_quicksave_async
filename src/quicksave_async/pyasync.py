@@ -13,7 +13,7 @@ from quicksave_async.task.image import image
 from quicksave_async.task.thumbnail import thumbnail
 from quicksave_async.task.video import video
 from quicksave_async.task.wget import wget
-from quicksave_async.task.youtube import youtube
+from quicksave_async.task.youtube import youtube_video
 from quicksave_async.util.logger import log
 from quicksave_async.util.storage import Sshfs, StorageFactory
 from quicksave_async.util.timer import Timer
@@ -39,7 +39,7 @@ def task(name, internal_create_request_bean, params):
     elif name == 'wget':
         return wget(internal_create_request_bean, storage)
     elif name == 'youtube:video':
-        return youtube(internal_create_request_bean, storage)
+        return youtube_video(internal_create_request_bean, storage)
     elif name == 'facebook:video':
         return facebook_video(internal_create_request_bean, storage)
     else:
