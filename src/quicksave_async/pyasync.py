@@ -1,5 +1,8 @@
 # This file is a part of quicksave project.
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
+import traceback
+
+import sys
 
 from quicksave_async.rabbit_loop import rabbit_loop
 from quicksave_async.rabbit_push import rabbit_push
@@ -55,6 +58,9 @@ def task_callback(channel, task_bean):
             database_task = DatabaseTaskBean(databaseConnectionString=task_bean.internalCreateRequest.databaseConnectionString, type='insert', beanname='Tag', beanjson=tag_bean.to_string())
             rabbit_push(channel, database_task)
         except:
+            print()
+            traceback.print_exc(file=sys.stdout)
+            print()
             log('ERROR processing bean:')
             log(task_bean.to_string())
 

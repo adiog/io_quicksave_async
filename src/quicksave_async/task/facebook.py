@@ -1,6 +1,10 @@
 # This file is a part of quicksave project.
 # Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
 
+import traceback
+
+import sys
+
 from quicksave_pybeans.generated.QsBeans import DatabaseTaskBean, TagBean
 
 from quicksave_async.libs.file_bean_creator import create_file_bean
@@ -25,6 +29,9 @@ def facebook_video(internal_create_request_bean, storage_provider):
                 DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='insert', beanname='Tag', beanjson=tag_bean.to_string()),
                 DatabaseTaskBean(databaseConnectionString=internal_create_request_bean.databaseConnectionString, type='update', beanname='Meta', beanjson=meta.to_string())]
     except:
+        print()
+        traceback.print_exc(file=sys.stdout)
+        print()
         return []
 
 
