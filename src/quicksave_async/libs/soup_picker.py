@@ -8,5 +8,5 @@ from bs4 import BeautifulSoup
 def picker(url, selector):
     response = requests.get(url)
     html_content = response.text
-    soup_document = BeautifulSoup(html_content)
+    soup_document = BeautifulSoup(html_content, 'html.parser')
     return soup_document.select(selector)

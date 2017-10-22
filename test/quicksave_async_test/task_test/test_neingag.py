@@ -5,16 +5,17 @@ import unittest
 import os
 from quicksave_pybeans.generated.QsBeans import InternalCreateRequestBean, CreateRequestBean, MetaBean
 
-from quicksave_async.task.youtube import youtube_video
+from quicksave_async.task.facebook import facebook_video
+from quicksave_async.task.neingag import neingag
 from quicksave_async.util.storage import LocalStorage
 
 
-class youtube_test(unittest.TestCase):
-    def test_youtube_video(self):
+class neingag_test(unittest.TestCase):
+    def test_neingag(self):
         meta_bean = MetaBean(
             meta_hash = 'abcdefgh',
             name = 'name',
-            source_url = 'https://www.youtube.com/watch?v=WeEWhbn55Hc'
+            text = 'https://9gag.com/gag/aq1Dn3Z'
         )
         create_request_bean = CreateRequestBean(
             meta = meta_bean
@@ -29,4 +30,4 @@ class youtube_test(unittest.TestCase):
         storage_provider = LocalStorage(os.getcwd())
         storage_provider.init(meta_bean.meta_hash)
 
-        self.assertNotEqual(youtube_video(internal_create_request_bean, storage_provider), [])
+        self.assertNotEqual(neingag(internal_create_request_bean, storage_provider), [])

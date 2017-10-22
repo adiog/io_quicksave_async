@@ -11,7 +11,7 @@ from quicksave_async.libs.file_bean_creator import create_file_bean
 from quicksave_async.libs.sanitized_youtube_dl import sanitized_youtube_dl
 
 
-def youtube(internal_create_request_bean, storage_provider):
+def youtube_video(internal_create_request_bean, storage_provider):
     try:
         meta = internal_create_request_bean.createRequest.meta
 
