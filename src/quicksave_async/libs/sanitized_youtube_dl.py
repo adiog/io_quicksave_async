@@ -9,17 +9,23 @@ from quicksave_async.util.regex import retrieve_from_string_by_regex
 
 
 def sanitized_youtube_dl(video_url):
-    download_command = 'youtube-dl --merge-output-format mkv --restrict-filenames %s' % video_url
-    subprocess.check_call(download_command, shell=True)
-    filename_command = 'youtube-dl --merge-output-format mkv --restrict-filenames --get-filename %s' % video_url
-    original_filename = re.sub(r'\n', '', subprocess.check_output(filename_command.split(' ')).decode())
-    if not os.path.exists(original_filename):
-        try_original_filename = re.sub(r'\.[^\.]*$', '.mkv', original_filename)
-        if os.path.exists(try_original_filename):
-            original_filename = try_original_filename
+    for ext in ['webm', 'mkv', 'mp4']:
+        try:
+            print(ext)
+            return sanitized_youtube_dl_with_format(video_url, ext)
+        except subprocess.CalledProcessError:
+            pass
+    raise RuntimeError()
+
+
+def sanitized_youtube_dl_with_format(video_url, ext):
+    filename_command = f'youtube-dl -f {ext} --merge-output-format {ext} --restrict-filenames --get-filename {video_url}'
+    filename_command_output = subprocess.check_output(filename_command.split(' '))
+    original_filename = re.sub(r'\n', '', filename_command_output.decode())
+    download_command = f'youtube-dl -f {ext} --merge-output-format {ext} --restrict-filenames {video_url}'
+    subprocess.check_call(download_command.split(' '))
     sanitized_filename = sanitize_filename(original_filename)
     original_filepath = original_filename
-
     return original_filepath, sanitized_filename
 
 

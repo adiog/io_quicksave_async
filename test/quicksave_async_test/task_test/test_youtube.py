@@ -10,7 +10,7 @@ from quicksave_async.util.storage import LocalStorage
 
 
 class youtube_test(unittest.TestCase):
-    def test_facebook_video(self):
+    def test_youtube_video(self):
         meta_bean = MetaBean(
             meta_hash = 'abcdefgh',
             name = 'name',
