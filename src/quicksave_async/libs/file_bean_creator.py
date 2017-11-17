@@ -1,5 +1,6 @@
-# This file is a part of [[$]] project.
-# Copyright (c) 2017 Aleksander Gajewski <adiog@brainfuck.pl>.
+# This file is a part of quicksave project.
+# Copyright (c) 2017 Aleksander Gajewski <adiog@quicksave.io>.
+
 import os
 
 import magic

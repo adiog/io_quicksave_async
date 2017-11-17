@@ -12,6 +12,7 @@ from quicksave_async.task.git import git
 from quicksave_async.task.image import image
 from quicksave_async.task.neingag import neingag
 from quicksave_async.task.thumbnail import thumbnail
+from quicksave_async.task.twitter import twitter_tweet
 from quicksave_async.task.video import video
 from quicksave_async.task.wget import wget
 from quicksave_async.task.youtube import youtube_video
@@ -39,6 +40,8 @@ def task(name, internal_create_request_bean, params):
         return thumbnail(internal_create_request_bean, storage)
     elif name == '9gag':
         return neingag(internal_create_request_bean, storage)
+    elif name == 'twitter':
+        return twitter_tweet(internal_create_request_bean, storage)
     elif name == 'wget':
         return wget(internal_create_request_bean, storage)
     elif name == 'youtube:video':
