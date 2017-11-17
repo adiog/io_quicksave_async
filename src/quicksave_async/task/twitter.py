@@ -20,7 +20,7 @@ def twitter_tweet(internal_create_request_bean, storage_provider):
     try:
         item_dir = storage_provider.getMetaPath(meta.meta_hash)
         twitterdump = item_dir + '/twitterdump'
-        subprocess.check_output(['wget', '--no-check-certificate', '-P', twitterdump,
+        subprocess.check_output(['wget', '--no-check-certificate', '-e', 'robots=off', '-P', twitterdump,
                                  '-k', '-p', '--span-hosts', '--domains', 'twitter.com,abs.twimg.com,pbs.twimg.com,twimg.com',
                                  twitter_url])
     except:
